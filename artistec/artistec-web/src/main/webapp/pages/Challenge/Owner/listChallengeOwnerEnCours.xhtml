@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template.xhtml">
+	<ui:define name="title">My Challenges</ui:define>
+	<ui:define name="content">
+		<h1>My Challenges</h1>
+		<p:commandButton action="addChallenge?faces-redirect=true"
+			id="iconOnly2" icon="ui-icon-disk" title="Icon Only" />
+
+		<h:form id="form">
+			<p:dataTable
+				value="#{challengeManagementBean.doGetChallengesPerOwnerEnCours()}"
+				var="ch">
+				<f:facet name="header">
+			            Document Viewer
+			        </f:facet>
+				<p:column headerText="Title">
+					<h:outputText value="#{ch.title}" />
+				</p:column>
+				<p:column headerText="Description">
+					<h:outputText value="#{ch.description}" />
+				</p:column>
+				<p:column headerText="Nbr participation">
+					<h:outputText value="#{challengeManagementBean.doGetNbrParticipationParChallenge(ch.challengeId)}" />
+				</p:column>
+				<p:column headerText="Add date">
+					<h:outputText value="#{ch.addDate}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="start date">
+					<h:outputText value="#{ch.startDate}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="end date">
+					<h:outputText value="#{ch.endDate}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:24px">
+					<p:commandLink update=":form:documentPanel"
+						oncomplete="PF('documentDialog').show()" title="View Detail"
+						styleClass="ui-icon ui-icon-search">
+						<f:setPropertyActionListener value="#{ch}"
+							target="#{challengeManagementBean.challenge}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+
+			<p:dialog id="dialog" header="Document Detail" showEffect="fade"
+				widgetVar="documentDialog" modal="true" resizable="false">
+				<p:outputPanel id="documentPanel">
+					<p:panelGrid columns="2" columnClasses="label,value"
+						rendered="#{not empty challengeManagementBean.challenge}">
+						<h:outputLabel for="name" value="Name: " />
+						<p:inplace id="basic">
+							<p:inputText value="#{challengeManagementBean.challenge.title}" />
+						</p:inplace>
+						<h:outputLabel for="name" value="Description : " />
+
+						<p:inplace id="basic2">
+							<p:inputText
+								value="#{challengeManagementBean.challenge.description}" />
+						</p:inplace>
+
+						<p:outputLabel for="console" value="Type :" />
+						<p:selectOneRadio id="console"
+							value="#{challengeManagementBean.challenge.type}">
+							<f:selectItem itemLabel="Peinture" itemValue="PINTURE" />
+							<f:selectItem itemLabel="Photographir" itemValue="PHOTOGRAPHIE" />
+							<f:selectItem itemLabel="Sculture" itemValue="SCULTURE" />
+						</p:selectOneRadio>
+
+
+						<p:outputLabel value="Jurry :" />
+						<p:selectCheckboxMenu id="multiple"
+							value="#{challengeManagementBean.jurryId}" label="Cities"
+							multiple="true" filter="true" filterMatchMode="startsWith"
+							panelStyle="width:250px">
+							<f:selectItems value="#{challengeManagementBean.lstJurry}"
+								var="t" itemLabel="#{t.firstName}" itemValue="#{t.userId}" />
+						</p:selectCheckboxMenu>
+
+
+
+						<p:outputLabel value="Start Time :" />
+						<p:calendar id="StartDate"
+							value="#{challengeManagementBean.challenge.startDate}"
+							pattern="MM/dd/yyyy HH:mm:ss" />
+
+						<p:outputLabel value="End Time :" />
+						<p:calendar id="EndDate"
+							value="#{challengeManagementBean.challenge.endDate}"
+							pattern="MM/dd/yyyy HH:mm:ss" />
+						<p:outputLabel value="Image :" />
+						<p:fileUpload style="width:700px;"
+							value="#{challengeManagementBean.file}"
+							fileUploadListener="#{challengeManagementBean.handleFileUpload}"
+							mode="advanced" dragDropSupport="false" sizeLimit="1000000"
+							fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+
+
+						<h:outputLabel for="type" value="Update " />
+						<p:commandButton
+							action="#{challengeManagementBean.doUpdateChallenge()}"
+							id="iconOnly" icon="ui-icon-disk" title="Icon Only" />
+						<h:outputLabel for="type2" value="Delete" />
+						<p:commandButton
+							action="#{challengeManagementBean.doDeleteChallenge()}"
+							id="iconOnly2" icon="ui-icon-disk" title="Icon Only" />
+
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
+

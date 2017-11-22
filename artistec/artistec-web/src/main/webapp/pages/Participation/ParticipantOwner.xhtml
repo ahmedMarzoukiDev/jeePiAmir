@@ -1,0 +1,46 @@
+
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	template="/WEB-INF/template/template.xhtml">
+	<ui:define name="title">My Challenges</ui:define>
+	<ui:define name="content">
+		<h1>List Challenge + Participant </h1>
+		
+		<h3 style="margin-top:0">Basic</h3>
+    <p:accordionPanel value="#{challengeManagementBean.doGetParticipantPerChallengePerOwner()}" var="map"  >
+       <p:tab   title="#{map.title}">
+            <h:panelGrid columns="2" cellpadding="10" >
+            
+    			 <p:tabView orientation="left"  value="#{map.participation.toArray()}" var="p">
+			        <p:tab title="#{p.pk.participant.firstName}">
+			            <h:panelGrid columns="2" cellpadding="10">
+			                <p:graphicImage name="imagesChallenge/team_member_2.jpg" />
+			                <h:outputText
+			                    value="#{p.pk.participant.firstName}" />
+			            </h:panelGrid>
+			        </p:tab>
+			        
+			    </p:tabView>
+				
+				
+             
+            </h:panelGrid>
+        </p:tab>
+   </p:accordionPanel>
+    
+    
+    
+   </ui:define>
+
+
+</ui:composition>
+
+

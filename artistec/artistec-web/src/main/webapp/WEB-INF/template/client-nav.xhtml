@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form rendered="#{userBean.loggedInAsJurry}">
+		<p:menubar>
+
+			<p:submenu label="My Challenges" icon="ui-icon-document">
+				<p:menuitem value="Challenge Passed"
+					action="/pages/Challenge/Jurry/listChallengeJurryPassed?faces-redirect=true" />
+				<p:separator />
+				<p:menuitem value="Challenge Comming"
+					action="/pages/Challenge/Jurry/listChallengeJurryComming?faces-redirect=true" />
+				<p:separator />
+				<p:menuitem value="Challenge En Cours"
+					action="/pages/Challenge/Jurry/listChallengeJurry?faces-redirect=true" />
+			</p:submenu>
+
+				<p:menuitem value="Other Challenges" action="/pages/Challenge/listChallenge?faces-redirect=true" icon="ui-icon-arrowreturnthick-1-w" />
+				
+
+			
+			<f:facet name="options">
+				<ui:include src="/WEB-INF/template/identity.xhtml" />
+			</f:facet>
+		</p:menubar>
+	</h:form>
+
+
+
+
+
+
+
+
+	<h:form rendered="#{userBean.loggedInAsArtist}">
+		<p:menubar>
+
+			<p:submenu label="My Challenge" icon="ui-icon-document">
+				<p:menuitem value="Challenge Passed"
+					action="/pages/Challenge/Jurry/listChallengeJurryPassed?faces-redirect=true" />
+				<p:separator />
+				<p:menuitem value="Challenge Comming"
+					action="/pages/Challenge/Jurry/listChallengeJurryComming?faces-redirect=true" />
+				<p:separator />
+				<p:menuitem value="Challenge En Cours"
+					action="/pages/Challenge/Jurry/listChallengeJurry?faces-redirect=true" />
+			</p:submenu>
+
+			<p:submenu label="Edit" icon="ui-icon-pencil">
+				<p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w" />
+				<p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />
+			</p:submenu>
+
+			<p:submenu label="Help" icon="ui-icon-help">
+				<p:menuitem value="Contents" url="#" />
+				<p:submenu label="Search" icon="ui-icon-search">
+					<p:submenu label="Text">
+						<p:menuitem value="Workspace" url="#" />
+					</p:submenu>
+					<p:menuitem value="File" url="#" />
+				</p:submenu>
+			</p:submenu>
+
+			<p:submenu label="Actions" icon="ui-icon-gear">
+				<p:submenu label="Ajax" icon="ui-icon-refresh">
+				</p:submenu>
+
+			</p:submenu>
+
+			<p:menuitem value="Quit" url="http://www.primefaces.org"
+				icon="ui-icon-close" />
+
+			<f:facet name="options">
+				<ui:include src="/WEB-INF/template/identity.xhtml" />
+			</f:facet>
+		</p:menubar>
+	</h:form>
+
+
+
+
+
+
+
+
+
+
+
+
+	<h:form rendered="#{userBean.loggedInAsOwner}">
+		<p:menubar>
+			<p:submenu label="My Challenge" icon="ui-icon-document">
+
+				<p:menuitem value="Challenge Passed"
+					action="/pages/Challenge/Owner/listChallengeOwnerPassed?faces-redirect=true" />
+				<p:separator />
+				<p:menuitem value="Challenge Comming"
+					action="/pages/Challenge/Owner/listChallengeOwner?faces-redirect=true" />
+				<p:separator />
+				<p:menuitem value="Challenge En Cours"
+					action="/pages/Challenge/Artist/listChallengeArtist?faces-redirect=true" />
+			</p:submenu>
+
+
+
+			<f:facet name="options">
+				<ui:include src="/WEB-INF/template/identity.xhtml" />
+			</f:facet>
+		</p:menubar>
+	</h:form>
+
+
+
+
+	<h:form rendered="#{identity.loggedInAsStudent}">
+		<h:panelGrid columns="2">
+			<h:commandLink
+				action="/pages/studentHome/myCourses?faces-redirect=true"
+				value="My Courses" />
+			<h:commandLink
+				action="/pages/studentHome/subscription?faces-redirect=true"
+				value="Suscribe" />
+		</h:panelGrid>
+	</h:form>
+
+</ui:composition>

@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form rendered="#{userBean.logged}">
+		<h:panelGrid columns="2">
+			<h:outputText value="Logged in as #{userBean.user.firstName}" />
+			<p:commandButton action="#{userBean.logout()}" ajax="false"
+				value="Logout" icon="ui-icon-extlink"/>
+		</h:panelGrid>
+	</h:form>
+
+</ui:composition>
+

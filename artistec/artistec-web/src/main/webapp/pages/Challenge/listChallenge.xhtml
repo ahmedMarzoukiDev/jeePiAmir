@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/WEB-INF/template/template.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="title">ARTGAR</ui:define>
+	<ui:define name="content">
+
+		<h1>List Challenge For User</h1>
+
+
+
+		<h:form>
+			<p:dataScroller value="#{challengeManagementBean.doGetChallenges()}"
+				var="ch" chunkSize="10">
+				<f:facet name="header">
+           			 Scroll Down to Load More Challenges
+       			 </f:facet>
+
+					<p:graphicImage name="imagesChallenge/#{ch.image}" height="100"
+						width="200" />
+
+
+					<p:outputPanel>
+						<h:panelGrid columns="2" cellpadding="5">
+
+
+							<h:outputText value="Title : " />
+							<h:outputText value="#{ch.title}" style="font-weight: bold" />
+
+							<h:outputText value="Description : " />
+							<h:outputText value="#{ch.description}" style="font-weight: bold" />
+
+							<h:outputLabel for="type" value="Participate" />
+							<p:column headerText="List Participant">
+								<p:commandButton value="View Challenge" type="submit" 
+									action="#{challengeManagementBean.doRedirectToChallenge(ch.challengeId)}" />
+							</p:column>
+							<p:commandButton
+								action="#{participationManagementBean.doAddParticipation(ch.challengeId)}"  rendered="#{challengeManagementBean.userConnected.role eq 'ARTIST'}"
+								id="iconOnly2" icon="ui-icon-disk" title="Participat" />
+
+						</h:panelGrid>
+					</p:outputPanel>
+					<p:separator />
+			</p:dataScroller>
+
+		</h:form>
+
+
+
+
+	</ui:define>
+
+</ui:composition>

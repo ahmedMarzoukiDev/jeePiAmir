@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/WEB-INF/template/template.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="title">my</ui:define>
+	<ui:define name="content">
+		
+		<h1>Add Callenge</h1>
+		
+		<h:form>
+		<h:panelGrid columns="2" border="2">
+				<h:outputLabel value="Title :" />
+				<h:inputText value="#{challengeManagementBean.challenge.title}" />
+				
+				
+				<h:outputLabel value="Description :" />
+				<h:inputText value="#{challengeManagementBean.challenge.description}" />
+				
+				 <h:outputLabel for="desc" value="Description" style="font-weight:bold"/>
+            <p:inputTextarea id="desc" value="#{challengeManagementBean.challenge.description}" required="true" label="Description">
+                <f:validateLength minimum="3" maximum="10" /> 
+            </p:inputTextarea>
+            <p:message for="desc" />
+<!--             <h:outputText value="#{validationView.description}" />
+ -->            
+            
+
+				<p:outputLabel for="console" value="Type :" />
+				<p:selectOneRadio id="console" value="#{challengeManagementBean.challenge.type}">
+				    <f:selectItem itemLabel="Peinture" itemValue="PINTURE" />
+				    <f:selectItem itemLabel="Photographie" itemValue="PHOTOGRAPHIE" />
+				    <f:selectItem itemLabel="Sculture" itemValue="SCULTURE" />
+				 </p:selectOneRadio>
+				 
+				<p:outputLabel  value="Jurry :" />
+		        <p:selectCheckboxMenu id="multiple" value="#{challengeManagementBean.jurryId}" label="Jurry" multiple="true"
+		                              filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+		            <f:selectItems value="#{challengeManagementBean.lstJurry}" var="t"
+						itemLabel="#{t.firstName}" itemValue="#{t.userId}" />
+		        </p:selectCheckboxMenu>
+				   
+				<p:outputLabel for="event" value="Select Event:" />
+       			 <p:calendar id="event" value="#{challengeManagementBean.challenge.addDate}">
+       			 </p:calendar>
+       			 
+       			  <p:outputLabel  value="Start Time :" />
+                  <p:calendar id="StartDate" value="#{challengeManagementBean.challenge.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+ 
+                  <p:outputLabel  value="End Time :" />
+                  <p:calendar id="EndDate" value="#{challengeManagementBean.challenge.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+   				<p:outputLabel  value="Image :" /> 				
+				<p:fileUpload style="width:700px;" value="#{challengeManagementBean.file}" fileUploadListener="#{challengeManagementBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+          		 sizeLimit="1000000" fileLimit="1"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+   	
+
+
+				<h:commandButton
+					actionListener="#{challengeManagementBean.doAddChallenge()}"
+					value="Creat" />
+					
+
+				
+			</h:panelGrid>
+					<p:tooltip />
+				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			
+		</h:form>
+	</ui:define>
+	
+</ui:composition>

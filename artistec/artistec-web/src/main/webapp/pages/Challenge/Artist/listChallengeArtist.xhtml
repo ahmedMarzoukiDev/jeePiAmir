@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template.xhtml">
+	<ui:define name="title">My Challenges Jurry</ui:define>
+	<ui:define name="content">
+		<h1>My Challenges Artist</h1>
+
+		<h:form id="form">
+			<p:dataTable
+				value="#{challengeManagementBean.doGetParticipantPerJurryEnCours()}"
+				var="p">
+				<f:facet name="header">
+			            Document Viewer
+			        </f:facet>
+				<p:column headerText="Title">
+					<h:outputText value="#{p.pk.challenge.title}" />
+				</p:column>
+				<p:column headerText="Description">
+					<h:outputText value="#{p.pk.challenge.description}" />
+				</p:column>
+				<p:column headerText="id">
+					<h:outputText value="#{p.pk.challenge.challengeId}" />
+				</p:column>
+				<p:column headerText="List Participant">
+
+					<p:commandButton value="Annulate " type="submit"
+						action="#{participationManagementBean.annulateParticipation(p.pk.challenge.challengeId)}">
+
+					</p:commandButton>
+
+				</p:column>
+
+				<p:column headerText="List photo">
+
+					<p:commandLink update=":form:documentPanel2"
+						oncomplete="PF('documentDialog2').show()" title="View Detail"
+						styleClass="ui-icon ui-icon-search">
+						<f:setPropertyActionListener value="#{p.pk.challenge.challengeId}"
+							target="#{challengeManagementBean.chidpart}" />
+						<f:setPropertyActionListener value="#{p.pk.participant.userId}"
+							target="#{challengeManagementBean.paridpart}" />
+					</p:commandLink>
+
+
+
+				</p:column>
+			</p:dataTable>
+
+
+
+
+
+			<p:dialog header="Modal Dialog" widgetVar="documentDialog2" modal="true"
+				height="600">
+				<h:outputText value="Photos" />
+<p:commandLink update=":form:documentPanel" oncomplete="PF('documentDialog').show()" title="View Detail" styleClass="ui-icon ui-icon-search">
+			           
+			         
+			            </p:commandLink>
+				<p:outputPanel id="documentPanel2">
+					<h:outputText value="#{challengeManagementBean.paridpart}" />
+					<h:outputText value="#{challengeManagementBean.chidpart}" />
+
+					<p:dataGrid var="photo"
+						value="#{challengeManagementBean.doGetPhotoChallengeByUserChallenge()}"
+						columns="3" layout="grid" rows="3" paginator="false" id="cars">
+
+						<f:facet name="header">
+				            My photos 
+				        </f:facet>
+
+						<p:panel header="#{photo.addDate}" style="text-align:center">
+							<h:panelGrid columns="1" style="width:60%">
+								<p:graphicImage name="imagesChallenge/#{photo.imageUrl}" height="100"
+									width="100" />
+
+								<h:outputText value="#{photo.imageName}" />
+								
+
+							</h:panelGrid>
+						</p:panel>
+
+					</p:dataGrid>
+
+
+				</p:outputPanel>
+			</p:dialog>
+
+	<p:dialog id="dialog" header="Document Detail" showEffect="fade" widgetVar="documentDialog" modal="true" resizable="false">
+			        <p:outputPanel id="documentPanel">
+			            <p:panelGrid  columns="2" columnClasses="label,value" >
+			          <h:outputText value="id challenge : #{challengeManagementBean.chid}" />
+			            
+			                <h:outputLabel for="name" value="Name: " />
+			                <p:outputLabel  value="Image :" /> 				
+							<p:fileUpload style="width:700px;" value="#{photoChallengeBean.file}" fileUploadListener="#{photoChallengeBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+          					 sizeLimit="1000000" fileLimit="1"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+			            	<h:outputLabel for="type2" value="Delete" />
+			                <p:commandButton action="#{photoChallengeBean.doAddPhotoChallenge(challengeManagementBean.chid)}" id="iconOnly2"  icon="ui-icon-disk" title="Icon Only" />
+			            
+			            </p:panelGrid>
+			        </p:outputPanel>
+			    </p:dialog> 
+			
+
+
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
+

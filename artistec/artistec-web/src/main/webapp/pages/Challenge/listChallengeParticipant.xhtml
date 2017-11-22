@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template.xhtml">
+	<ui:define name="title">My Challenges Jurry</ui:define>
+	<ui:define name="content">
+		<h1>My Challenges Participant</h1>
+		
+			<h:form id="form">
+			
+			    <p:dataTable value="#{challengeManagementBean.doGetParticipantPerUser()}" var="p">
+			        <f:facet name="header" >
+			            Document Viewer
+			        </f:facet>
+			        <p:column headerText="Title">
+			            <h:outputText value="#{p.pk.challenge.title}"  />
+			        </p:column>
+			        <p:column headerText="Description">
+			            <h:outputText value="#{p.pk.challenge.description}" />
+			        </p:column>
+			        <p:column headerText="id">
+			            <h:outputText value="#{p.pk.challenge.challengeId}" />
+			        </p:column>
+			        <p:column headerText="List Participant">
+			        	<p:commandButton value="MXX" type="submit"  
+			        	action="#{challengeManagementBean.doRedirectToChallenge(p.pk.challenge.challengeId)}"/>
+			    	</p:column>
+			    </p:dataTable>
+			 
+			<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true" height="100">
+			    <p:outputLabel  value="Image :" /> 				
+				<p:fileUpload style="width:700px;" value="#{challengeManagementBean.file}" fileUploadListener="#{challengeManagementBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+          		 sizeLimit="1000000" fileLimit="1"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+   	
+			    
+			    
+			    <h:outputText value="Photos" />
+			    <h3 style="margin-top:0">Manual</h3>
+					<p:commandButton type="button" onclick="PF('switcher').previous();"
+					    icon="ui-icon-circle-triangle-w" id="prev"/>
+					<p:commandButton type="button" onclick="PF('switcher').next();"
+					    icon="ui-icon-circle-triangle-e" id="next"/>
+					 
+					<p:imageSwitch effect="wipe" widgetVar="switcher" id="manuelSwitcher"
+					    slideshowAuto="false">
+					    <ui:repeat value="#{imagesView.images}" var="image" id="manuelSwitcherImages">
+					        <p:graphicImage name="/demo/images/nature/#{image}" id="image"/>
+					    </ui:repeat>
+					</p:imageSwitch>
+			</p:dialog> 
+			   
+			</h:form>
+	</ui:define>
+
+
+</ui:composition>
+

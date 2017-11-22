@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template.xhtml">
+	<ui:define name="title">My Challenges Jurry</ui:define>
+	<ui:define name="content">
+		<h1>My Challenges Jurry</h1>
+
+		<h:form id="form">
+			<p:dataTable
+				value="#{challengeManagementBean.doGetParticipantPerJurryEnCours()}" var="p">
+				
+				<p:column headerText="Title">
+					<h:outputText value="#{p.pk.challenge.title}" />
+				</p:column>
+				<p:column headerText="Description">
+					<h:outputText value="#{p.pk.challenge.description}" />
+				</p:column>
+				<p:column headerText="Type">
+					<h:outputText value="#{p.pk.challenge.type }" />
+				</p:column>
+				<p:column headerText="List Participant">
+
+
+					<p:commandLink update=":form:documentPanel"
+						oncomplete="PF('dlg2').show()" title="View Detail"
+						styleClass="ui-icon ui-icon-search">
+						<f:setPropertyActionListener value="#{p.pk.challenge.challengeId}"
+							target="#{challengeManagementBean.chid}" />
+
+					</p:commandLink>
+
+
+
+				</p:column>
+			</p:dataTable>
+			<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true"
+				height="400" width="600">
+				<h:outputText value="List Participant" />
+				<p:outputPanel id="documentPanel">
+					<h:outputText value="#{challengeManagementBean.chid}" />
+					<p:dataTable
+						value="#{challengeManagementBean.doGetParticipationByChallenges()}"
+						var="x">
+						<f:facet name="header">
+			            Document Viewer
+			        </f:facet>
+						<p:column headerText="First name">
+							<h:outputText value="#{x.pk.participant.firstName}" />
+						</p:column>
+						<p:column headerText="Last name">
+							<h:outputText value="#{x.pk.participant.lastName}" />
+						</p:column>
+						<p:column headerText="id">
+							<h:outputText value="#{x.pk.challenge.challengeId}" />
+						</p:column>
+						<p:column headerText="id user">
+							<h:outputText value="#{x.pk.participant.userId}" />
+						</p:column>
+						<p:column headerText="Photos">
+							<p:commandLink update=":form:documentPanel2"
+								oncomplete="PF('dlg3').show()" title="View Detail"
+								styleClass="ui-icon ui-icon-search">
+								<f:setPropertyActionListener
+									value="#{x.pk.challenge.challengeId}"
+									target="#{challengeManagementBean.chidpart}" />
+								<f:setPropertyActionListener value="#{x.pk.participant.userId}"
+									target="#{challengeManagementBean.paridpart}" />
+
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+					<p:commandButton value="Photos" type="button"
+						onclick="PF('dlg3').show();" />
+				</p:outputPanel>
+			</p:dialog>
+			<p:dialog header="Modal Dialog" widgetVar="dlg3" modal="true"
+				height="500">
+				<h:outputText value="Photos" />
+
+				<p:outputPanel id="documentPanel2">
+					<h:outputText value="#{challengeManagementBean.paridpart}" />
+					<h:outputText value="#{challengeManagementBean.chidpart}" />
+
+					<p:dataGrid var="car"
+						value="#{challengeManagementBean.doGetPhotoChallengeByUserChallenge()}"
+						columns="3" layout="grid" rows="3" paginator="false" id="cars">
+
+						
+
+						<p:panel header="#{car.imageName}" style="text-align:center">
+							<h:panelGrid columns="1" style="width:60%">
+								<p:graphicImage name="imagesChallenge/#{car.imageUrl}" height="100"
+									width="140" />
+
+								<h:outputText value="#{car.imageName}" />
+								<p:commandLink update=":form:documentPanel4"
+									oncomplete="PF('dlg4').show()" title="Noter"
+									styleClass="ui-icon ui-icon-search" actionListener="#{photoChallengeBean.doGetNotePhoto(car.photoChallengeId)}">
+									<f:setPropertyActionListener value="#{car.photoChallengeId}"
+										target="#{photoChallengeBean.idPhoto}" />
+									
+								</p:commandLink>
+
+							</h:panelGrid>
+						</p:panel>
+
+					</p:dataGrid>
+
+
+				</p:outputPanel>
+			</p:dialog>
+
+
+
+
+			<p:dialog header="Modal Dialog" widgetVar="dlg4" modal="true"
+				height="100">
+
+				<h:outputText value="Photos" />
+
+				<p:outputPanel id="documentPanel4">
+					<h:outputText value="#{photoChallengeBean.idPhoto}" />
+
+					<h:inputText value="#{photoChallengeBean.a}" />
+					<h:commandButton action="#{photoChallengeBean.doAddNotePhoto()}"
+						value="noter" />
+
+				</p:outputPanel>
+				
+
+			</p:dialog>
+
+
+
+
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
+
